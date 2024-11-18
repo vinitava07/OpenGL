@@ -13,6 +13,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{7a2dbc5b-5dc9-4f00-acca-6eb690adcb17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -21,27 +24,33 @@
     <ClCompile Include="main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="stb.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\lib\stb.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
-      <Filter>src</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\include\stb_image.h">
-      <Filter>src</Filter>
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex_shader.fs">
-      <Filter>src</Filter>
+    <None Include="assets\shaders\fragment_shader.glsl">
+      <Filter>src\shaders</Filter>
     </None>
-    <None Include="fragment_shader.fs">
-      <Filter>src</Filter>
+    <None Include="assets\shaders\vertex_shader.glsl">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\light_fragment.glsl">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\light_vertex.glsl">
+      <Filter>src\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
