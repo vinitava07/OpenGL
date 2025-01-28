@@ -181,9 +181,13 @@ int main(void)
 	GLuint diffuseMap = load_textures("./assets/sprites/container2.png");
 	GLuint specularMap = load_textures("./assets/sprites/container2_specular.png");
 
+	shader.use();
+	shader.setInt("material.diffuse", 0);
+	shader.setInt("material.specular", 1);
+
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
-	//double previousTime = glfwGetTime();
-	//int frameCount = 0;
+	double previousTime = glfwGetTime();
+	int frameCount = 0;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -205,9 +209,8 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
+
 		//DEFININDO O MATERIAL DO OBJETO
-		shader.setInt("material.diffuse", 0);
-		shader.setInt("material.specular", 1);
 		shader.setFloat("material.shininess", 32.0f);
 
 		//DEFININDO A LUZ DO OBJETO
@@ -218,11 +221,20 @@ int main(void)
 
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-		shader.setVec3("light.ambient", ambientColor);
-		shader.setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+		shader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+		shader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f); // darken diffuse light a bit
 		shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		shader.setFloat("light.constant", 1.0f);
+		shader.setFloat("light.linear", 0.09f);
+		shader.setFloat("light.quadratic", 0.032f);
+		//shader.setVec3("light.position", lightPos);
 
-		shader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+		shader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		shader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+
+		shader.setVec3("light.position", camera.position);
+		shader.setVec3("light.direction", camera.front);
+		//shader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
 
 		shader.setVec3("viewPos", camera.position);
@@ -233,10 +245,11 @@ int main(void)
 		//VIEW = CAMERA
 		glm::mat4 view = camera.getViewMatrix(); // camera view
 		shader.setMat4("view", view);
-		const float radius = 1.0f;
-		float camX = sin(glfwGetTime()) * radius;
-		float camY = cos(glfwGetTime()) * radius;
-		float camZ = cos(glfwGetTime()) * radius;
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		glBindVertexArray(VAO);
 		for (size_t i = 0; i < 10; i++)
@@ -247,16 +260,13 @@ int main(void)
 			model = glm::rotate(model, glm::radians(angle) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 			shader.setMat4("model", model);
 			shader.setVec3("lightPos", lightPos);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, diffuseMap);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, specularMap);
+			
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		}
 
 		glBindVertexArray(0);
-		lightShader.use();
+		/*lightShader.use();
 		lightShader.setMat4("view", view);
 		lightShader.setMat4("projection", projection);
 		glm::mat4 model = glm::mat4(1.0f);
@@ -267,7 +277,7 @@ int main(void)
 		lightShader.setVec3("lightColor", lightColor);
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
+		glBindVertexArray(0);*/
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
