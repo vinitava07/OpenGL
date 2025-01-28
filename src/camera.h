@@ -70,19 +70,29 @@ public:
 
 	void processKeyboard(Camera_Movement direction, float deltaTime)
 	{
+		glm::vec3 directionVector = glm::vec3(0.0f);
+		
 		float velocity = movementSpeed * deltaTime;
+
 		if (direction == FORWARD)
-			position += front * velocity;
+			directionVector += front;
 		if (direction == BACKWARD)
-			position -= front * velocity;
+			directionVector -= front;
 		if (direction == LEFT)
-			position -= right * velocity;
+			directionVector -= right;
 		if (direction == RIGHT)
-			position += right * velocity;
+			directionVector += right;
 		if (direction == UP)
-			position += worldUp * velocity;
+			directionVector += worldUp;
 		if (direction == DOWN)
-			position -= worldUp * velocity;
+			directionVector -= worldUp;
+
+		// Normaliza o vetor resultante se houver movimento
+		if (glm::length(directionVector) > 0.0f)
+			directionVector = glm::normalize(directionVector);
+
+		// Atualiza a posição
+		position += directionVector * velocity;
 	}
 
 	void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)

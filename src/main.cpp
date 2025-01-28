@@ -18,6 +18,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void displayFps(int* frameTime, double* previousCount);
 void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -131,7 +132,7 @@ int main(void)
 
 	glEnable(GL_DEPTH_TEST);
 
-	glm::vec3 lightPos(1.2f, 1.0f, -1.0f);
+	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 	//inicalizando shader
 	Shader shader("./assets/shaders/vertex_shader.glsl", "./assets/shaders/fragment_shader.glsl");
@@ -161,32 +162,23 @@ int main(void)
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glm::vec3 lightColor(1.0f, 1.0f, 0.0f);
+	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
+
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
-	double previousTime = glfwGetTime();
-	int frameCount = 0;
+	//double previousTime = glfwGetTime();
+	//int frameCount = 0;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 
-		double currentTime = glfwGetTime();
-		frameCount++;
-		// If a second has passed.
-		if (currentTime - previousTime >= 1.0)
-		{
-			// Display the frame count here any way you want.
-			std::cout << frameCount << std::endl;
 
-			frameCount = 0;
-			previousTime = currentTime;
-		}
-
+		//displayFps(&frameCount, &previousTime);
 		// per-frame time logic
-	   // --------------------
+		// --------------------
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -200,10 +192,27 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-		shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		shader.setVec3("lightColor", lightColor);
-		shader.setVec3("viewPos", camera.position);
+		//DEFININDO O MATERIAL DO OBJETO
+		shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+		shader.setFloat("material.shininess", 32.0f);
 
+		//DEFININDO A LUZ DO OBJETO
+		/*lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);*/
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		shader.setVec3("light.ambient", ambientColor);
+		shader.setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+		shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		shader.setVec3("light.position", lightPos);
+
+
+		shader.setVec3("viewPos", camera.position);
 		// PERSPECTIVA DA CAMERA
 		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		shader.setMat4("projection", projection);
@@ -215,18 +224,18 @@ int main(void)
 		float camX = sin(glfwGetTime()) * radius;
 		float camY = cos(glfwGetTime()) * radius;
 		float camZ = cos(glfwGetTime()) * radius;
-		lightPos = glm::vec3(camX, 0.0f, camZ);
+		//lightPos = glm::vec3(1.0f, 0.0f, 0.5f);
 
 		glBindVertexArray(VAO);
-		for (size_t i = 0; i < 2; i++)
+		for (size_t i = 0; i < 1; i++)
 		{
-
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
-			float angle = (i) * 10.0f;
-			model = glm::rotate(model, glm::radians(angle) * (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+			float angle = (i) * 0.0f;
+			model = glm::rotate(model, glm::radians(angle) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 			shader.setMat4("model", model);
 			shader.setVec3("lightPos", lightPos);
+
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		}
@@ -325,6 +334,21 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll((float)yoffset);
 }
+
+void displayFps(int* frameCount, double* previousTime) {
+	double currentTime = glfwGetTime();
+	*frameCount += 1;
+	// If a second has passed.
+	if (currentTime - *previousTime >= 1.0)
+	{
+		// Display the frame count here any way you want.
+		std::cout << *frameCount << std::endl;
+
+		*frameCount = 0;
+		*previousTime = currentTime;
+	}
+}
+
 
 unsigned int load_textures(std::string path) {
 	//CARREGANDO TEXTURAS
