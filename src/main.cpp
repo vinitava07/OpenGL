@@ -14,6 +14,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "model.h"
+
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
@@ -23,9 +25,9 @@ void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int load_textures(std::string path);
-void setDirectionalLight(Shader shader);
-void setPointLights(Shader shader);
-void setSpotLight(Shader shader);
+void setDirectionalLight(Shader &shader);
+void setPointLights(Shader &shader);
+void setSpotLight(Shader &shader);
 
 // camera
 Camera camera(glm::vec3(0.0f, 1.0f, 4.0f));
@@ -157,7 +159,7 @@ int main(void)
 	Shader lightShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/light_fragment.glsl");
 
 
-	//VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
+	////VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
 	GLuint VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -192,17 +194,18 @@ int main(void)
 	GLuint specularMap = load_textures("./assets/sprites/container2_specular.png");
 
 	shader.use();
-	shader.setInt("material.diffuse", 0);
-	shader.setInt("material.specular", 1);
+	shader.setInt("material.texture_diffuse1", 0);
+	shader.setInt("material.texture_specular1", 1);
 
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
 	double previousTime = glfwGetTime();
 	int frameCount = 0;
+
+	Model backpack = Model("./assets/models/backpack/backpack.obj");
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-
-
 		//displayFps(&frameCount, &previousTime);
 		// per-frame time logic
 		// --------------------
@@ -224,9 +227,9 @@ int main(void)
 		shader.setFloat("material.shininess", 32.0f);
 
 		//DEFININDO A LUZ DO OBJETO
-		lightColor.x = sin(glfwGetTime() * 2.0f);
+		/*lightColor.x = sin(glfwGetTime() * 2.0f);
 		lightColor.y = sin(glfwGetTime() * 0.7f);
-		lightColor.z = sin(glfwGetTime() * 1.3f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);*/
 		setDirectionalLight(shader);
 		setPointLights(shader);
 		setSpotLight(shader);
@@ -240,6 +243,12 @@ int main(void)
 		glm::mat4 view = camera.getViewMatrix(); // camera view
 		shader.setMat4("view", view);
 
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+		shader.setMat4("model", model);
+
+		backpack.draw(shader);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
 		glActiveTexture(GL_TEXTURE1);
@@ -416,7 +425,7 @@ unsigned int load_textures(std::string path) {
 
 }
 
-void setDirectionalLight(Shader shader) {
+void setDirectionalLight(Shader &shader) {
 
 	glm::vec3 dirLightPos = glm::vec3(-0.2f, -1.0f, -0.3f);
 	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
@@ -428,7 +437,7 @@ void setDirectionalLight(Shader shader) {
 
 }
 
-void setPointLights(Shader shader) {
+void setPointLights(Shader &shader) {
 
 	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
@@ -466,7 +475,7 @@ void setPointLights(Shader shader) {
 
 }
 
-void setSpotLight(Shader shader) {
+void setSpotLight(Shader &shader) {
 
 	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);

@@ -38,6 +38,12 @@
     <ClInclude Include="camera.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment_shader.glsl">
