@@ -50,7 +50,7 @@ struct DirLight {
 
 out vec4 FragColor;
 
-in vec3 normal;
+//in vec3 normal;
 in vec3 fragPos;  
 in vec2 texCoords;
 
@@ -64,23 +64,39 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);  
 vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
+float near = 0.1; 
+float far  = 100.0; 
+
+float linearizeDepth(float depth){
+
+    float z = depth * 2.0 - 1.0; //back to ndc
+    return (2.0 * near * far) / (far + near - z * (far - near));
+
+}
+
+
 void main()
 {
     
-    vec3 norm = normalize(normal);
+   // vec3 norm = normalize(normal);
     vec3 viewDir = normalize(viewPos - fragPos);
    // vec3 result = vec3(0.0f, 0.0f, 0.0f);
-    vec3 result = calcDirLight(dirLight, norm, viewDir);
+    //vec3 result = calcDirLight(dirLight, norm, viewDir);
     for(int i = 0; i < NR_POINT_LIGHTS; i++){
     
-        result += calcPointLight(pointLights[i], norm, fragPos, viewDir);
+        //result += calcPointLight(pointLights[i], norm, fragPos, viewDir);
     }
     
-    result += calcSpotLight(spotLight, norm, fragPos, viewDir);    
+    //result += calcSpotLight(spotLight, norm, fragPos, viewDir);    
 
-    FragColor = vec4(result, 1.0f);
+    //FragColor = vec4(result, 1.0f);
     
-    //FragColor = texture(material.texture_diffuse1, texCoords);
+    FragColor = texture(material.texture_diffuse1, texCoords);
+
+    //float depth = linearizeDepth(gl_FragCoord.z) / far;
+
+   // FragColor = vec4(vec3(depth), 1.0);
+
 
 }
 

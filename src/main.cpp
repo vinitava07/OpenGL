@@ -93,49 +93,49 @@ int main(void)
 	}
 
 	//faces dos cubos
-	float vertices[] = {
-		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, //back
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+	float cubeVertices[] = {
+		// positions          // texture Coords
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f, //front
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,//left
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,//right
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,//bottom
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,//top
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 	//posicoes dos varios cubos
 	glm::vec3 cubePositions[] = {
@@ -151,7 +151,19 @@ int main(void)
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	float planeVertices[] = {
+		// positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
+		 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+		-5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+		-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+
+		 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+		-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+		 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+	};
+
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
@@ -159,40 +171,65 @@ int main(void)
 	Shader shader("./assets/shaders/vertex_shader.glsl", "./assets/shaders/fragment_shader.glsl");
 	Shader lightShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/light_fragment.glsl");
 
-
 	////VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
-	GLuint VBO, VAO;
-	GLuint lightVAO;
+	GLuint VBO, VAO, lightVAO;
 
-	setUpInitalCubesAndLights(&VAO, &VBO, &lightVAO, vertices, sizeof(vertices));
+	//setUpInitalCubesAndLights(&VAO, &VBO, &lightVAO, vertices, sizeof(vertices));
+
+	GLuint cubeVAO, cubeVBO, planeVAO, planeVBO;
+	//CUBEs
+	glGenVertexArrays(1, &cubeVAO);
+	glGenBuffers(1, &cubeVBO);
+	glBindVertexArray(cubeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+	//PLANE
+	glGenVertexArrays(1, &planeVAO);
+	glGenBuffers(1, &planeVBO);
+	glBindVertexArray(planeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//LOAD TEXTURES
-	GLuint diffuseMap = load_textures("./assets/sprites/container2.png");
-	GLuint specularMap = load_textures("./assets/sprites/container2_specular.png");
+	/*GLuint diffuseMap = load_textures("./assets/sprites/container2.png");
+	GLuint specularMap = load_textures("./assets/sprites/container2_specular.png");*/
+
+	GLuint cubeTexture = load_textures("./assets/sprites/marble.jpg");
+	GLuint floorTexture = load_textures("./assets/sprites/metal.png");
+
 
 	shader.use();
 	shader.setInt("material.texture_diffuse1", 0);
-	shader.setInt("material.texture_specular1", 1);
+	//shader.setInt("material.texture_specular1", 1);
 
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
 	double previousTime = glfwGetTime();
 	int frameCount = 0;
 
-	Model backpack = Model("./assets/models/backpack/backpack.obj");
+	//Model backpack = Model("./assets/models/backpack/backpack.obj");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		//displayFps(&frameCount, &previousTime);
 		// per-frame time logic
-		// --------------------
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		// input
-		// -----
 		processInput(window);
 
 		/* Render here */
@@ -204,43 +241,49 @@ int main(void)
 
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
-
 		//DEFININDO A LUZ DO OBJETO
-		/*lightColor.x = sin(glfwGetTime() * 2.0f);
-		lightColor.y = sin(glfwGetTime() * 0.7f);
-		lightColor.z = sin(glfwGetTime() * 1.3f);*/
 		setDirectionalLight(shader);
 		setPointLights(shader);
 		setSpotLight(shader);
 
 		// PERSPECTIVA DA CAMERA
-		shader.setVec3("viewPos", camera.position);
-		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		shader.setMat4("projection", projection);
-
-		//VIEW = CAMERA
-		glm::mat4 view = camera.getViewMatrix(); // camera view
-		shader.setMat4("view", view);
-
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+		glm::mat4 view = camera.getViewMatrix();
+		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		shader.setMat4("view", view);
+		shader.setMat4("projection", projection);
+		shader.setVec3("viewPos", camera.position);
+
+		// cubes
+		glBindVertexArray(cubeVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		model = glm::translate(model, glm::vec3(-1.0f, 0.1f, -1.0f));
 		shader.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(2.0f, 0.1f, 0.0f));
+		shader.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		// floor
+		glBindVertexArray(planeVAO);
+		glBindTexture(GL_TEXTURE_2D, floorTexture);
+		shader.setMat4("model", glm::mat4(1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
 
-		backpack.draw(shader);
-
-		drawInitialCubesAndLight(shader, lightShader, diffuseMap, specularMap, cubePositions, &VAO, &lightVAO);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		/* Poll for and process events */
 		glfwPollEvents();
-	}
 
+	}
 	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	shader.deleteShader();
+	lightShader.deleteShader();
 
 	glfwDestroyWindow(window);
 
@@ -355,7 +398,7 @@ unsigned int load_textures(std::string path) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	}
