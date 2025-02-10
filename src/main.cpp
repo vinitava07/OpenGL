@@ -1,5 +1,4 @@
 #include <iostream>
-#include <Windows.h>
 #include <cstdio>
 #include <string>
 
@@ -7,7 +6,6 @@
 #include <GLFW/glfw3.h>
 #include "shader.h"
 #include "camera.h"
-
 #include <stb/stb_image.h>
 
 #include <glm/glm.hpp>
@@ -52,7 +50,7 @@ glm::vec3 pointLightPositions[] = {
 int main(void)
 {
 
-	SetConsoleOutputCP(GetACP());
+	// SetConsoleOutputCP(GetACP());
 	stbi_set_flip_vertically_on_load(true);
 
 	GLFWwindow* window;
@@ -219,7 +217,7 @@ int main(void)
 	double previousTime = glfwGetTime();
 	int frameCount = 0;
 
-	//Model backpack = Model("./assets/models/backpack/backpack.obj");
+	// Model backpack = Model("./assets/models/backpack/backpack.obj");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -238,6 +236,7 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
+
 
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
@@ -341,7 +340,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
 	}
 
 	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // ao contrario pq o eixo X é invertido
+	float yoffset = lastY - ypos; // ao contrario pq o eixo X ï¿½ invertido
 
 	lastX = xpos;
 	lastY = ypos;
