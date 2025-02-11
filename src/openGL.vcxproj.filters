@@ -59,4 +59,9 @@
       <Filter>src\shaders</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="outline_fragment.glsl">
+      <Filter>src\shaders</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

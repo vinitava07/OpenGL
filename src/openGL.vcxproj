@@ -156,6 +156,9 @@
     <None Include="assets\shaders\light_vertex.glsl" />
     <None Include="assets\shaders\vertex_shader.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="outline_fragment.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
