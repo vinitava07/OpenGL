@@ -13,6 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "model.h"
+#include <map>
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -171,13 +172,13 @@ int main(void)
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 	};
 
-	std::vector<glm::vec3> vegetation;
+	std::vector<glm::vec3> windows;
 
-	vegetation.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
-	vegetation.push_back(glm::vec3(1.5f, 0.0f, -0.48f));
-	vegetation.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
-	vegetation.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
-	vegetation.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
+	windows.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
+	windows.push_back(glm::vec3(1.5f, 0.0f, -0.48f));
+	windows.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
+	windows.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
+	windows.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -194,7 +195,7 @@ int main(void)
 
 	//setUpInitalCubesAndLights(&VAO, &VBO, &lightVAO, vertices, sizeof(vertices));
 
-	GLuint cubeVAO, cubeVBO, planeVAO, planeVBO, grassVAO, grassVBO;
+	GLuint cubeVAO, cubeVBO, planeVAO, planeVBO, windowVAO, grassVBO;
 	//CUBEs
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
@@ -218,9 +219,9 @@ int main(void)
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
 	//GRASS
-	glGenVertexArrays(1, &grassVAO);
+	glGenVertexArrays(1, &windowVAO);
 	glGenBuffers(1, &grassVBO);
-	glBindVertexArray(grassVAO);
+	glBindVertexArray(windowVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), &grassVertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -238,7 +239,7 @@ int main(void)
 
 	GLuint cubeTexture = load_textures("./assets/sprites/marble.jpg");
 	GLuint floorTexture = load_textures("./assets/sprites/metal.png");
-	GLuint grassTexture = load_textures("./assets/sprites/grass.png");
+	GLuint windowTexture = load_textures("./assets/sprites/window.png");
 
 
 	shader.use();
@@ -250,6 +251,9 @@ int main(void)
 	int frameCount = 0;
 
 	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 	// Model backpack = Model("./assets/models/backpack/backpack.obj");
 
@@ -316,16 +320,23 @@ int main(void)
 		glBindVertexArray(0);
 
 		// grass
-		glBindVertexArray(grassVAO);
-		for (size_t i = 0; i < vegetation.size(); i++)
+		std::map<float, glm::vec3> sorted;
+		for (size_t i = 0; i < windows.size(); i++)
+		{
+			float distance = glm::length(camera.position - windows[i]);
+			sorted[distance] = windows[i];
+		}
+		glBindVertexArray(windowVAO);
+		for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); it++)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, grassTexture);
+			glBindTexture(GL_TEXTURE_2D, windowTexture);
 			model = glm::mat4(1.0f);
-			model = glm::translate(model, vegetation.at(i));
-			model = glm::rotate(model, (float) glm::radians(90.0f) * 1, glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::translate(model, it->second);
+			model = glm::rotate(model, (float)glm::radians(90.0f) * 1, glm::vec3(0.0f, 1.0f, 0.0f));
 			shader.setMat4("model", model);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
+
 		}
 		glBindVertexArray(0);
 
