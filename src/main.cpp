@@ -93,48 +93,48 @@ int main(void)
 
 	//faces dos cubos
 	float cubeVertices[] = {
-		// positions          // texture Coords
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		// Back face
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right         
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+		// Front face
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
+		// Left face
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+		// Right face
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right         
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left     
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+		 // Bottom face
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+		  0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+		  0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
+		  0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+		 -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+		 // Top face
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right     
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+		 -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, // bottom-left        
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
 	};
 	//posicoes dos varios cubos
 	glm::vec3 cubePositions[] = {
@@ -253,8 +253,9 @@ int main(void)
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE);
 
-
+	glFrontFace(GL_CW);
 	// Model backpack = Model("./assets/models/backpack/backpack.obj");
 
 	/* Loop until the user closes the window */
@@ -274,8 +275,6 @@ int main(void)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-
-
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
 		//DEFININDO A LUZ DO OBJETO
@@ -285,7 +284,6 @@ int main(void)
 
 		shader.use();
 		// PERSPECTIVA DA CAMERA
-		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = camera.getViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		shader.setMat4("view", view);
@@ -297,6 +295,8 @@ int main(void)
 		outlineShader.setMat4("projection", projection);
 		outlineShader.setVec3("viewPos", camera.position);
 
+		glm::mat4 model;
+
 		shader.use();
 		// floor
 		glBindVertexArray(planeVAO);
@@ -305,13 +305,14 @@ int main(void)
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 
-		// cubes
+		// cube 1
 		glBindVertexArray(cubeVAO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, cubeTexture);
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-1.0f, 0.01f, -1.0f));
 		shader.setMat4("model", model);
+		// cube 2
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(2.0f, 0.01f, 0.0f));
@@ -339,8 +340,6 @@ int main(void)
 
 		}
 		glBindVertexArray(0);
-
-
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
