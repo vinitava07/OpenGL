@@ -104,7 +104,6 @@ void main()
     FragColor = texColor;
 
 
-
 }
 
 vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir) {

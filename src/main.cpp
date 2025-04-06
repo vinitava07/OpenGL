@@ -161,7 +161,7 @@ int main(void)
 		 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
 	};
 
-	float grassVertices[] = {
+	float windowVertices[] = {
 		// positions          // texture Coords
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -170,6 +170,17 @@ int main(void)
 		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	};
+
+	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates. NOTE that this plane is now much smaller and at the top of the screen
+		// positions   // texCoords
+		-0.3f,  1.0f,  0.0f, 1.0f,
+		-0.3f,  0.7f,  0.0f, 0.0f,
+		 0.3f,  0.7f,  1.0f, 0.0f,
+
+		-0.3f,  1.0f,  0.0f, 1.0f,
+		 0.3f,  0.7f,  1.0f, 0.0f,
+		 0.3f,  1.0f,  1.0f, 1.0f
 	};
 
 	std::vector<glm::vec3> windows;
@@ -189,13 +200,14 @@ int main(void)
 	Shader shader("./assets/shaders/vertex_shader.glsl", "./assets/shaders/fragment_shader.glsl");
 	Shader lightShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/light_fragment.glsl");
 	Shader outlineShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/outline_fragment.glsl");
+	Shader screenShader("./assets/shaders/framebuffer_vertex.glsl", "./assets/shaders/framebuffer_fragment.glsl");
 
 	////VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
 	GLuint VBO, VAO, lightVAO;
 
 	//setUpInitalCubesAndLights(&VAO, &VBO, &lightVAO, vertices, sizeof(vertices));
 
-	GLuint cubeVAO, cubeVBO, planeVAO, planeVBO, windowVAO, grassVBO;
+	GLuint cubeVAO, cubeVBO, planeVAO, quadVAO, quadVBO, planeVBO, windowVAO, grassVBO;
 	//CUBEs
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
@@ -223,23 +235,58 @@ int main(void)
 	glGenBuffers(1, &grassVBO);
 	glBindVertexArray(windowVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), &grassVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(windowVertices), &windowVertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
+	//QUAD VAO
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
 
+	GLuint framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+	GLuint textureColorbuffer;
+	glGenTextures(1, &textureColorbuffer);
+	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+	GLuint rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//LOAD TEXTURES
-	/*GLuint diffuseMap = load_textures("./assets/sprites/container2.png");
-	GLuint specularMap = load_textures("./assets/sprites/container2_specular.png");*/
 
-	GLuint cubeTexture = load_textures("./assets/sprites/marble.jpg");
+	GLuint cubeTexture = load_textures("./assets/sprites/container.jpg");
 	GLuint floorTexture = load_textures("./assets/sprites/metal.png");
-	GLuint windowTexture = load_textures("./assets/sprites/window.png");
+	//GLuint windowTexture = load_textures("./assets/sprites/window.png");
 
 
 	shader.use();
@@ -253,9 +300,7 @@ int main(void)
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_CULL_FACE);
 
-	glFrontFace(GL_CW);
 	// Model backpack = Model("./assets/models/backpack/backpack.obj");
 
 	/* Loop until the user closes the window */
@@ -270,17 +315,18 @@ int main(void)
 		processInput(window);
 
 		/* Render here */
-		// Clean the back buffer and assign the new color to it
-
+		// desenhando no frame
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
 		//DEFININDO A LUZ DO OBJETO
-		setDirectionalLight(shader);
+		/*setDirectionalLight(shader);
 		setPointLights(shader);
-		setSpotLight(shader);
+		setSpotLight(shader);*/
 
 		shader.use();
 		// PERSPECTIVA DA CAMERA
@@ -290,14 +336,13 @@ int main(void)
 		shader.setMat4("projection", projection);
 		shader.setVec3("viewPos", camera.position);
 
-		outlineShader.use();
+		/*outlineShader.use();
 		outlineShader.setMat4("view", view);
 		outlineShader.setMat4("projection", projection);
-		outlineShader.setVec3("viewPos", camera.position);
+		outlineShader.setVec3("viewPos", camera.position);*/
 
 		glm::mat4 model;
 
-		shader.use();
 		// floor
 		glBindVertexArray(planeVAO);
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
@@ -320,8 +365,42 @@ int main(void)
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		//desenhando fora do frame
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		model = glm::mat4(1.0f);
+		view = camera.getViewMatrix();
+		shader.setMat4("view", view);
+
+		glBindVertexArray(cubeVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+		shader.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+		shader.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		// floor
+		glBindVertexArray(planeVAO);
+		glBindTexture(GL_TEXTURE_2D, floorTexture);
+		shader.setMat4("model", glm::mat4(1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
+		glDisable(GL_DEPTH_TEST);
+
+		screenShader.use();	
+		glBindVertexArray(quadVAO);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
 		// grass
-		std::map<float, glm::vec3> sorted;
+		/*std::map<float, glm::vec3> sorted;
 		for (size_t i = 0; i < windows.size(); i++)
 		{
 			float distance = glm::length(camera.position - windows[i]);
@@ -339,7 +418,7 @@ int main(void)
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		}
-		glBindVertexArray(0);
+		glBindVertexArray(0);*/
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -350,6 +429,14 @@ int main(void)
 	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &cubeVAO);
+	glDeleteVertexArrays(1, &planeVAO);
+	glDeleteVertexArrays(1, &quadVAO);
+	glDeleteBuffers(1, &cubeVBO);
+	glDeleteBuffers(1, &planeVBO);
+	glDeleteBuffers(1, &quadVBO);
+	glDeleteRenderbuffers(1, &rbo);
+	glDeleteFramebuffers(1, &framebuffer);
 	shader.deleteShader();
 	lightShader.deleteShader();
 

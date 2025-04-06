@@ -152,6 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment_shader.glsl" />
+    <None Include="assets\shaders\framebuffer_fragment.glsl" />
+    <None Include="assets\shaders\framebuffer_vertex.glsl" />
     <None Include="assets\shaders\light_fragment.glsl" />
     <None Include="assets\shaders\light_vertex.glsl" />
     <None Include="assets\shaders\vertex_shader.glsl" />
