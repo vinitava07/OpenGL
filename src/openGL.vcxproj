@@ -156,6 +156,8 @@
     <None Include="assets\shaders\framebuffer_vertex.glsl" />
     <None Include="assets\shaders\light_fragment.glsl" />
     <None Include="assets\shaders\light_vertex.glsl" />
+    <None Include="assets\shaders\skybox_fragment.glsl" />
+    <None Include="assets\shaders\skybox_vertex.glsl" />
     <None Include="assets\shaders\vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>

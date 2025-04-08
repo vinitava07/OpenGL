@@ -50,10 +50,12 @@ struct DirLight {
 
 out vec4 FragColor;
 
-//in vec3 normal;
+in vec3 normal;
 in vec3 fragPos;  
+in vec3 position;
 in vec2 texCoords;
 
+uniform samplerCube skybox;
 uniform vec3 viewPos;
 uniform Material material;
 uniform DirLight dirLight;
@@ -101,7 +103,11 @@ void main()
    //     discard;
    // }
 
-    FragColor = texColor;
+   float ratio = 1.0f / 1.33f;
+   vec3 I = normalize(position - viewPos);
+   vec3 R = refract(I, normalize(normal), ratio);
+
+    FragColor =  vec4(texture(skybox, R).rgb, 1.0);
 
 
 }
