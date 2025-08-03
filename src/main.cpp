@@ -51,7 +51,8 @@ glm::vec3 pointLightPositions[] = {
 
 int main(void)
 {
-
+	
+	//teste
 	// SetConsoleOutputCP(GetACP());
 	stbi_set_flip_vertically_on_load(true);
 
