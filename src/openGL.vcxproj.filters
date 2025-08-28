@@ -46,34 +46,44 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\fragment_shader.glsl">
+    <None Include="assets\shaders\fragment_shader.frag">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\vertex_shader.glsl">
+    <None Include="assets\shaders\vertex_shader.vert">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\light_fragment.glsl">
+    <None Include="assets\shaders\light_fragment.frag">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\light_vertex.glsl">
+    <None Include="assets\shaders\light_vertex.vert">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\framebuffer_fragment.glsl">
+    <None Include="assets\shaders\framebuffer_fragment.frag">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\framebuffer_vertex.glsl">
+    <None Include="assets\shaders\framebuffer_vertex.vert">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\skybox_fragment.glsl">
+    <None Include="assets\shaders\skybox_fragment.frag">
       <Filter>src\shaders</Filter>
     </None>
-    <None Include="assets\shaders\skybox_vertex.glsl">
+    <None Include="assets\shaders\skybox_vertex.vert">
       <Filter>src\shaders</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="outline_fragment.glsl">
+    <None Include="assets\shaders\outline_fragment.frag">
       <Filter>src\shaders</Filter>
-    </Text>
+    </None>
+    <None Include="assets\shaders\geometry_shader.geom">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\normal_fragment.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\normal_geometry.geom">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\normal_vertex.vert">
+      <Filter>src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

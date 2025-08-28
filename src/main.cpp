@@ -95,47 +95,47 @@ int main(void)
 
 	//faces dos cubos
 	float cubeVertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, //back
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f, //front
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,//left
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,//right
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,//bottom
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,//top
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 	//posicoes dos varios cubos
 	glm::vec3 cubePositions[] = {
@@ -238,16 +238,17 @@ int main(void)
 	windows.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 	//inicalizando shader
-	Shader shader("./assets/shaders/vertex_shader.glsl", "./assets/shaders/fragment_shader.glsl");
-	Shader lightShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/light_fragment.glsl");
-	Shader outlineShader("./assets/shaders/light_vertex.glsl", "./assets/shaders/outline_fragment.glsl");
-	Shader screenShader("./assets/shaders/framebuffer_vertex.glsl", "./assets/shaders/framebuffer_fragment.glsl");
-	Shader skyboxShader("./assets/shaders/skybox_vertex.glsl", "./assets/shaders/skybox_fragment.glsl");
+	Shader shader("./assets/shaders/vertex_shader.vert", "./assets/shaders/fragment_shader.frag", "");
+	Shader normalShader("./assets/shaders/normal_vertex.vert", "./assets/shaders/normal_fragment.frag", "./assets/shaders/normal_geometry.geom");
+	Shader lightShader("./assets/shaders/light_vertex.vert", "./assets/shaders/light_fragment.frag", "./assets/shaders/geometry_shader.geom");
+	Shader outlineShader("./assets/shaders/light_vertex.vert", "./assets/shaders/outline_fragment.frag", "./assets/shaders/geometry_shader.geom");
+	Shader screenShader("./assets/shaders/framebuffer_vertex.vert", "./assets/shaders/framebuffer_fragment.frag", "./assets/shaders/geometry_shader.geom");
+	Shader skyboxShader("./assets/shaders/skybox_vertex.vert", "./assets/shaders/skybox_fragment.frag", "./assets/shaders/geometry_shader.geom");
 
 	////VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
 	GLuint lightVAO;
@@ -261,10 +262,12 @@ int main(void)
 	glBindVertexArray(cubeVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 	//PLANE
 	glGenVertexArrays(1, &planeVAO);
@@ -274,8 +277,8 @@ int main(void)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 	//GRASS
 	glGenVertexArrays(1, &windowVAO);
@@ -353,11 +356,12 @@ int main(void)
 			"./assets/sprites/skybox/back.jpg"
 	};
 	GLuint cubemapTexture = loadCubemap(faces);
-	//GLuint windowTexture = load_textures("./assets/sprites/window.png");
+	GLuint windowTexture = load_textures("./assets/sprites/window.png");
 
 
 	shader.use();
 	shader.setInt("material.texture_diffuse1", 0);
+	shader.setFloat("time", glfwGetTime());
 	//shader.setInt("material.texture_specular1", 1);
 
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
@@ -385,18 +389,18 @@ int main(void)
 		/* Render here */
 
 		// desenhando no frame
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		//glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
 
-		shader.use();
 		// PERSPECTIVA DA CAMERA
 		glm::mat4  view = camera.getViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		shader.use();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 		shader.setVec3("viewPos", camera.position);
@@ -406,22 +410,32 @@ int main(void)
 		outlineShader.setMat4("projection", projection);
 		outlineShader.setVec3("viewPos", camera.position);*/
 
+
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-10.0f, 0.01f, -1.0f));
 		shader.setMat4("model", model);
 		backpack.draw(shader);
 
-		// floor
-		/*glBindVertexArray(planeVAO);
+		// then draw model with normal visualizing geometry shader
+		normalShader.use();
+		normalShader.setMat4("projection", projection);
+		normalShader.setMat4("view", view);
+		normalShader.setMat4("model", model);
+
+		backpack.draw(normalShader);
+		shader.use();
+		 //floor
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(planeVAO);
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
 		shader.setMat4("model", glm::mat4(1.0f));
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindVertexArray(0);*/
+		glBindVertexArray(0);
 
 		// cube 1
 		glBindVertexArray(cubeVAO);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-1.0f, 0.01f, -1.0f));
 		shader.setMat4("model", model);
@@ -433,27 +447,26 @@ int main(void)
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 
-		//SKYBOX
-		glDepthFunc(GL_LEQUAL);
-		skyboxShader.use();
-		view = glm::mat4(glm::mat3(camera.getViewMatrix()));
-		projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		skyboxShader.setMat4("view", view);
-		skyboxShader.setMat4("projection", projection);
-		glBindVertexArray(skyboxVAO);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthFunc(GL_LESS); // set depth function back to default
-		glBindVertexArray(0);
+		////SKYBOX
+		//glDepthFunc(GL_LEQUAL);
+		//skyboxShader.use();
+		//view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+		//projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		//skyboxShader.setMat4("view", view);
+		//skyboxShader.setMat4("projection", projection);
+		//glBindVertexArray(skyboxVAO);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDepthFunc(GL_LESS); // set depth function back to default
+		//glBindVertexArray(0);
 
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		screenShader.use();
 		glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		glDisable(GL_DEPTH_TEST);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawArrays(GL_TRIANGLES, 0, 6);*/
+		//glDisable(GL_DEPTH_TEST);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);

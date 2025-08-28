@@ -75,8 +75,8 @@
     <LibraryPath>C:\OpenGL\src\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\OpenGL\src\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\OpenGL\src\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\programacao\OpenGL\src\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\programacao\OpenGL\src\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -114,7 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OpenGL\src\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\programacao\OpenGL\src\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,17 +151,19 @@
     <ClInclude Include="shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\fragment_shader.glsl" />
-    <None Include="assets\shaders\framebuffer_fragment.glsl" />
-    <None Include="assets\shaders\framebuffer_vertex.glsl" />
-    <None Include="assets\shaders\light_fragment.glsl" />
-    <None Include="assets\shaders\light_vertex.glsl" />
-    <None Include="assets\shaders\skybox_fragment.glsl" />
-    <None Include="assets\shaders\skybox_vertex.glsl" />
-    <None Include="assets\shaders\vertex_shader.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="outline_fragment.glsl" />
+    <None Include="assets\shaders\fragment_shader.frag" />
+    <None Include="assets\shaders\framebuffer_fragment.frag" />
+    <None Include="assets\shaders\framebuffer_vertex.vert" />
+    <None Include="assets\shaders\geometry_shader.geom" />
+    <None Include="assets\shaders\light_fragment.frag" />
+    <None Include="assets\shaders\light_vertex.vert" />
+    <None Include="assets\shaders\normal_fragment.frag" />
+    <None Include="assets\shaders\normal_geometry.geom" />
+    <None Include="assets\shaders\normal_vertex.vert" />
+    <None Include="assets\shaders\outline_fragment.frag" />
+    <None Include="assets\shaders\skybox_fragment.frag" />
+    <None Include="assets\shaders\skybox_vertex.vert" />
+    <None Include="assets\shaders\vertex_shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
