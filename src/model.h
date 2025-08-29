@@ -13,6 +13,8 @@
 class Model {
 public:
 	std::string directory;
+	std::vector<Mesh> meshes;
+	std::vector<Texture> texturesLoaded;
 	Model(const std::string &path) {
 		loadModel(path);
 	}
@@ -24,8 +26,6 @@ public:
 	}
 private:
 
-	std::vector<Mesh> meshes;
-	std::vector<Texture> texturesLoaded;
 
 	void loadModel(std::string path) {
 		Assimp::Importer import;

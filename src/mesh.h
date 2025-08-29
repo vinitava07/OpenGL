@@ -23,6 +23,7 @@ struct Texture {
 
 class Mesh {
 public:
+	GLuint VAO, VBO, EBO;
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Texture> textures;
@@ -70,7 +71,6 @@ public:
 	}
 private:
 
-	GLuint VAO, VBO, EBO;
 
 	void setupMesh() {
 		//cria o buffer array

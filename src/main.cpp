@@ -15,8 +15,8 @@
 #include "model.h"
 #include <map>
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 720;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void displayFps(int* frameTime, double* previousCount);
@@ -237,18 +237,17 @@ int main(void)
 	windows.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
 	windows.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
-	glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
 
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 	//inicalizando shader
 	Shader shader("./assets/shaders/vertex_shader.vert", "./assets/shaders/fragment_shader.frag", "");
+	Shader instanceShader("./assets/shaders/instance_vertex.vert", "./assets/shaders/fragment_shader.frag", "");
 	Shader normalShader("./assets/shaders/normal_vertex.vert", "./assets/shaders/normal_fragment.frag", "./assets/shaders/normal_geometry.geom");
-	Shader lightShader("./assets/shaders/light_vertex.vert", "./assets/shaders/light_fragment.frag", "./assets/shaders/geometry_shader.geom");
-	Shader outlineShader("./assets/shaders/light_vertex.vert", "./assets/shaders/outline_fragment.frag", "./assets/shaders/geometry_shader.geom");
-	Shader screenShader("./assets/shaders/framebuffer_vertex.vert", "./assets/shaders/framebuffer_fragment.frag", "./assets/shaders/geometry_shader.geom");
-	Shader skyboxShader("./assets/shaders/skybox_vertex.vert", "./assets/shaders/skybox_fragment.frag", "./assets/shaders/geometry_shader.geom");
+	Shader lightShader("./assets/shaders/light_vertex.vert", "./assets/shaders/light_fragment.frag", "");
+	Shader outlineShader("./assets/shaders/light_vertex.vert", "./assets/shaders/outline_fragment.frag", "");
+	Shader screenShader("./assets/shaders/framebuffer_vertex.vert", "./assets/shaders/framebuffer_fragment.frag", "");
+	Shader skyboxShader("./assets/shaders/skybox_vertex.vert", "./assets/shaders/skybox_fragment.frag", "");
 
 	////VERTEX BUFFER OBJECT, VERTEX ARRAY OBJECT, ELEMENT BUFFER OBJECT
 	GLuint lightVAO;
@@ -367,13 +366,75 @@ int main(void)
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
 	double previousTime = glfwGetTime();
 	int frameCount = 0;
-	//glEnable(GL_CULL_FACE);
-
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	unsigned int amount = 1000;
+	glm::mat4* modelMatrices;
+	modelMatrices = new glm::mat4[amount];
+	srand(glfwGetTime());
+	float radius = 15.0f;
+	float offset = 2.5f;
+	for (int i = 0; i < amount; i++)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
 
-	 Model backpack = Model("./assets/models/backpack/backpack.obj");
+		float angle = (float)i / (float)amount * 360.0f;
+		float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float x = sin(angle) * radius + displacement;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float y = cos(angle) * radius + displacement;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float z = cos(angle) * radius + displacement;
+		model = glm::translate(model, glm::vec3(x, rand()%5/3, z));
+
+		float scale = (rand() % 20) / 100.0f + 0.05f;
+		model = glm::scale(model, glm::vec3(scale));
+
+		float rotAngle = (rand() % 360);
+		model = glm::rotate(model, glm::radians(rotAngle), glm::vec3(0.4, 0.6, 0.8));
+
+		modelMatrices[i] = model;
+
+	}
+
+
+	 Model planet = Model("./assets/models/planet/planet.obj");
+	 Model asteroid = Model("./assets/models/rock/rock.obj");
+
+	 //instance  buffering for each asteroid - mat4 is divided into 4 vec4 (shader limitaions)
+	 GLuint buffer;
+	 glBindVertexArray(0);
+
+	 glGenBuffers(1, &buffer);
+	 glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	 glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * amount, &modelMatrices[0], GL_STATIC_DRAW);
+	 for (size_t i = 0; i < asteroid.meshes.size(); i++)
+	 {
+		 GLuint VAO = asteroid.meshes[i].VAO;
+		 glBindVertexArray(VAO);
+
+		 size_t vec4Size = sizeof(glm::vec4);
+		 glEnableVertexAttribArray(3);
+		 glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+		 glEnableVertexAttribArray(4);
+		 glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+		 glEnableVertexAttribArray(5);
+		 glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+		 glEnableVertexAttribArray(6);
+		 glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+		 //skip 1 by 1 in each matrix
+		 glVertexAttribDivisor(3, 1);
+		 glVertexAttribDivisor(4, 1);
+		 glVertexAttribDivisor(5, 1);
+		 glVertexAttribDivisor(6, 1);
+
+		 glBindVertexArray(0);
+	 }
+
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -397,6 +458,11 @@ int main(void)
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
 		shader.setFloat("material.shininess", 32.0f);
 
+		/*outlineShader.use();
+		outlineShader.setMat4("view", view);
+		outlineShader.setMat4("projection", projection);
+		outlineShader.setVec3("viewPos", camera.position);*/
+
 		// PERSPECTIVA DA CAMERA
 		glm::mat4  view = camera.getViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -405,60 +471,69 @@ int main(void)
 		shader.setMat4("projection", projection);
 		shader.setVec3("viewPos", camera.position);
 
-		/*outlineShader.use();
-		outlineShader.setMat4("view", view);
-		outlineShader.setMat4("projection", projection);
-		outlineShader.setVec3("viewPos", camera.position);*/
-
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-10.0f, 0.01f, -1.0f));
+		//model = glm::translate(model, glm::vec3(-10.0f, 0.01f, -1.0f));
 		shader.setMat4("model", model);
-		backpack.draw(shader);
+		planet.draw(shader);
 
+		instanceShader.use();
+		instanceShader.setMat4("view", view);
+		instanceShader.setMat4("projection", projection);	
+		instanceShader.setVec3("viewPos", camera.position);
+		instanceShader.setInt("material.texture_diffuse1", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, asteroid.texturesLoaded[0].id);
+		for (size_t i = 0; i < asteroid.meshes.size(); i++)
+		{
+			glBindVertexArray(asteroid.meshes[i].VAO);
+			glDrawElementsInstanced(GL_TRIANGLES, asteroid.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
+			glBindVertexArray(0);
+
+		}
 		// then draw model with normal visualizing geometry shader
-		normalShader.use();
+		/*normalShader.use();
 		normalShader.setMat4("projection", projection);
 		normalShader.setMat4("view", view);
 		normalShader.setMat4("model", model);
 
-		backpack.draw(normalShader);
-		shader.use();
-		 //floor
-		glActiveTexture(GL_TEXTURE0);
-		glBindVertexArray(planeVAO);
-		glBindTexture(GL_TEXTURE_2D, floorTexture);
-		shader.setMat4("model", glm::mat4(1.0f));
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindVertexArray(0);
-
-		// cube 1
-		glBindVertexArray(cubeVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-1.0f, 0.01f, -1.0f));
-		shader.setMat4("model", model);
-		// cube 2
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(2.0f, 0.01f, 0.0f));
-		shader.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-
-		////SKYBOX
-		//glDepthFunc(GL_LEQUAL);
-		//skyboxShader.use();
-		//view = glm::mat4(glm::mat3(camera.getViewMatrix()));
-		//projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		//skyboxShader.setMat4("view", view);
-		//skyboxShader.setMat4("projection", projection);
-		//glBindVertexArray(skyboxVAO);
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glDepthFunc(GL_LESS); // set depth function back to default
+		backpack.draw(normalShader);*/
+		//shader.use();
+		// //floor
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindVertexArray(planeVAO);
+		//glBindTexture(GL_TEXTURE_2D, floorTexture);
+		//shader.setMat4("model", glm::mat4(1.0f));
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		//glBindVertexArray(0);
+
+		//// cube 1
+		//glBindVertexArray(cubeVAO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(-1.0f, 0.01f, -1.0f));
+		//shader.setMat4("model", model);
+		//// cube 2
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(2.0f, 0.01f, 0.0f));
+		//shader.setMat4("model", model);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindVertexArray(0);
+
+		//SKYBOX
+		glDepthFunc(GL_LEQUAL);
+		skyboxShader.use();
+		view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+		projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		skyboxShader.setMat4("view", view);
+		skyboxShader.setMat4("projection", projection);
+		glBindVertexArray(skyboxVAO);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthFunc(GL_LESS); // set depth function back to default
+		glBindVertexArray(0);
 
 		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

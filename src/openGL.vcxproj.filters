@@ -85,5 +85,8 @@
     <None Include="assets\shaders\normal_vertex.vert">
       <Filter>src\shaders</Filter>
     </None>
+    <None Include="assets\shaders\instance_vertex.vert">
+      <Filter>src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

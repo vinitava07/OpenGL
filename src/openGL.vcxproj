@@ -155,6 +155,7 @@
     <None Include="assets\shaders\framebuffer_fragment.frag" />
     <None Include="assets\shaders\framebuffer_vertex.vert" />
     <None Include="assets\shaders\geometry_shader.geom" />
+    <None Include="assets\shaders\instance_vertex.vert" />
     <None Include="assets\shaders\light_fragment.frag" />
     <None Include="assets\shaders\light_vertex.vert" />
     <None Include="assets\shaders\normal_fragment.frag" />
