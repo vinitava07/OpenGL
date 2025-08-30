@@ -15,8 +15,8 @@
 #include "model.h"
 #include <map>
 
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void displayFps(int* frameTime, double* previousCount);
@@ -48,6 +48,8 @@ glm::vec3 pointLightPositions[] = {
 	glm::vec3(-4.0f,  2.0f, -12.0f),
 	glm::vec3(0.0f,  0.0f, -3.0f)
 };
+bool blinn = false;
+bool blinnKeyPressed = false;
 
 int main(void)
 {
@@ -62,6 +64,10 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	//anti-aliasing
+	glfwWindowHint(GLFW_SAMPLES, 8);
+
 
 	/* Initialize the library */
 	if (!glfwInit()) {
@@ -152,14 +158,14 @@ int main(void)
 	};
 
 	float planeVertices[] = {
-		// positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
-		 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-		-5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
-		-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+		// positions            // normals         // texcoords
+		 10.0f, -0.5f,  10.0f,  0.0f, 1.0f, 0.0f,  10.0f,  0.0f,
+		-10.0f, -0.5f,  10.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+		-10.0f, -0.5f, -10.0f,  0.0f, 1.0f, 0.0f,   0.0f, 10.0f,
 
-		 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-		-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
-		 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+		 10.0f, -0.5f,  10.0f,  0.0f, 1.0f, 0.0f,  10.0f,  0.0f,
+		-10.0f, -0.5f, -10.0f,  0.0f, 1.0f, 0.0f,   0.0f, 10.0f,
+		 10.0f, -0.5f, -10.0f,  0.0f, 1.0f, 0.0f,  10.0f, 10.0f
 	};
 
 	float windowVertices[] = {
@@ -238,7 +244,7 @@ int main(void)
 	windows.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
 
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+	glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 
 	//inicalizando shader
 	Shader shader("./assets/shaders/vertex_shader.vert", "./assets/shaders/fragment_shader.frag", "");
@@ -274,9 +280,11 @@ int main(void)
 	glBindVertexArray(planeVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 	//GRASS
@@ -344,7 +352,7 @@ int main(void)
 	//LOAD TEXTURES
 
 	GLuint cubeTexture = load_textures("./assets/sprites/container.jpg");
-	GLuint floorTexture = load_textures("./assets/sprites/metal.png");
+	GLuint floorTexture = load_textures("./assets/sprites/wood.png");
 	std::vector<std::string> faces
 	{
 			"./assets/sprites/skybox/right.jpg",
@@ -362,12 +370,12 @@ int main(void)
 	shader.setInt("material.texture_diffuse1", 0);
 	shader.setFloat("time", glfwGetTime());
 	//shader.setInt("material.texture_specular1", 1);
-
 	// MODEL = MEU OBJETO, PROJECTION = TIPO DE PERSPECTIVA, VIEW = CAMERA
 	double previousTime = glfwGetTime();
 	int frameCount = 0;
+	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
@@ -435,7 +443,6 @@ int main(void)
 		 glBindVertexArray(0);
 	 }
 
-
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -451,12 +458,12 @@ int main(void)
 
 		// desenhando no frame
 		//glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glEnable(GL_DEPTH_TEST);
 
 		//DEFININDO O BRILHO MATERIAL DO OBJETO
-		shader.setFloat("material.shininess", 32.0f);
+		//shader.setFloat("material.shininess", 32.0f);
 
 		/*outlineShader.use();
 		outlineShader.setMat4("view", view);
@@ -470,13 +477,15 @@ int main(void)
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 		shader.setVec3("viewPos", camera.position);
+		shader.setVec3("lightPos", lightPos);
+		shader.setBool("blinn", blinn);
 
 
 		glm::mat4 model = glm::mat4(1.0f);
 		//model = glm::translate(model, glm::vec3(-10.0f, 0.01f, -1.0f));
 		shader.setMat4("model", model);
-		planet.draw(shader);
-
+		//planet.draw(shader);
+		/*
 		instanceShader.use();
 		instanceShader.setMat4("view", view);
 		instanceShader.setMat4("projection", projection);	
@@ -490,7 +499,7 @@ int main(void)
 			glDrawElementsInstanced(GL_TRIANGLES, asteroid.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
 			glBindVertexArray(0);
 
-		}
+		}*/
 		// then draw model with normal visualizing geometry shader
 		/*normalShader.use();
 		normalShader.setMat4("projection", projection);
@@ -498,14 +507,15 @@ int main(void)
 		normalShader.setMat4("model", model);
 
 		backpack.draw(normalShader);*/
-		//shader.use();
-		// //floor
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindVertexArray(planeVAO);
-		//glBindTexture(GL_TEXTURE_2D, floorTexture);
-		//shader.setMat4("model", glm::mat4(1.0f));
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
-		//glBindVertexArray(0);
+		shader.use();
+		 //floor
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(planeVAO);
+		glBindTexture(GL_TEXTURE_2D, floorTexture);
+		shader.setMat4("model", glm::mat4(1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
 
 		//// cube 1
 		//glBindVertexArray(cubeVAO);
@@ -523,17 +533,17 @@ int main(void)
 		//glBindVertexArray(0);
 
 		//SKYBOX
-		glDepthFunc(GL_LEQUAL);
-		skyboxShader.use();
-		view = glm::mat4(glm::mat3(camera.getViewMatrix()));
-		projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		skyboxShader.setMat4("view", view);
-		skyboxShader.setMat4("projection", projection);
-		glBindVertexArray(skyboxVAO);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthFunc(GL_LESS); // set depth function back to default
-		glBindVertexArray(0);
+		//glDepthFunc(GL_LEQUAL);
+		//skyboxShader.use();
+		//view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+		//projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		//skyboxShader.setMat4("view", view);
+		//skyboxShader.setMat4("projection", projection);
+		//glBindVertexArray(skyboxVAO);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDepthFunc(GL_LESS); // set depth function back to default
+		//glBindVertexArray(0);
 
 		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -592,6 +602,15 @@ void processInput(GLFWwindow* window)
 		camera.processKeyboard(UP, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera.processKeyboard(DOWN, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && !blinnKeyPressed)
+	{
+		blinn = !blinn;
+		blinnKeyPressed = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_RELEASE)
+	{
+		blinnKeyPressed = false;
+	}
 
 
 }
